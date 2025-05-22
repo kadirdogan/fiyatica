@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Fiyatica - Tüm Sitelerde Ara</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <style>
+    body {
+      padding: 2em;
+      background: #f8f8f8;
+    }
+    .card-title {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    .thumbnail {
+      height: 100%%;
+      opacity: 0;
+    }
+    .caption a {
+      display: inline-block;
+      margin-top: 10px;
+    }
+    #searchFeedback {
+      font-weight: bold;
+      font-size: 16px;
+      margin-top: 15px;
+      color: #007acc;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="well well-sm">
+      <strong>Fiyat Arama</strong>
+      <form class="form-inline" id="searchForm">
+        <div class="form-group">
+          <input type="text" class="form-control" id="query" placeholder="Ürün adı yazın" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Ara</button>
+      </form>
+    </div>
+
+    <div id="searchFeedback"></div>
+
+    <div id="results" class="row list-group hidden">
+      
+      <div class="item col-xs-12 col-sm-6 col-md-4">
+        <div class="thumbnail"><div class="caption">
+          <h4 class="card-title">
+            <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo" style="height:18px; vertical-align:middle; margin-right:8px;"> -->
+            Google
+          </h4>
+          <a id="googleLink" href="#" target="_blank" class="btn btn-default btn-block">Google'de Ara</a>
+        </div></div>
+      </div>
+    
+      <div class="item col-xs-12 col-sm-6 col-md-4">
+        <div class="thumbnail"><div class="caption">
+          <h4 class="card-title">
+           <!-- <img src="https://logowik.com/content/uploads/images/cimri-com-logo-vector.svg" alt="Cimri logo" style="height:18px; vertical-align:middle; margin-right:8px;">-->
+            Cimri
+          </h4>
+          <a id="cimriLink" href="#" target="_blank" class="btn btn-default btn-block">Cimri'de Ara</a>
+        </div></div>
+      </div>
+    
+      <div class="item col-xs-12 col-sm-6 col-md-4">
+        <div class="thumbnail"><div class="caption">
+          <h4 class="card-title">
+            <!--<img src="https://logowik.com/content/uploads/images/akakce-vector-logo.svg" alt="Akakçe logo" style="height:18px; vertical-align:middle; margin-right:8px;"> -->
+            Akakçe
+          </h4>
+          <a id="akakceLink" href="#" target="_blank" class="btn btn-default btn-block">Akakçe'de Ara</a>
+        </div></div>
+      </div>
+    
+      <div class="item col-xs-12 col-sm-6 col-md-4">
+        <div class="thumbnail"><div class="caption">
+          <h4 class="card-title">
+            <!-- <img src="https://logowik.com/content/uploads/images/hepsiburada-logo-vector.svg" alt="Hepsiburada logo" style="height:18px; vertical-align:middle; margin-right:8px;"> -->
+            Hepsiburada
+          </h4>
+          <a id="hepsiburadaLink" href="#" target="_blank" class="btn btn-default btn-block">Hepsiburada'de Ara</a>
+        </div></div>
+      </div>
+    
+      <div class="item col-xs-12 col-sm-6 col-md-4">
+        <div class="thumbnail"><div class="caption">
+          <h4 class="card-title">
+            <!-- <img src="https://seeklogo.com/images/T/trendyol-logo-A32D703109-seeklogo.com.svg" alt="Trendyol logo" style="height:18px; vertical-align:middle; margin-right:8px;"> -->
+            Trendyol
+          </h4>
+          <a id="trendyolLink" href="#" target="_blank" class="btn btn-default btn-block">Trendyol'de Ara</a>
+        </div></div>
+      </div>
+    
+      <div class="item col-xs-12 col-sm-6 col-md-4">
+        <div class="thumbnail"><div class="caption">
+          <h4 class="card-title">
+            <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon logo" style="height:18px; vertical-align:middle; margin-right:8px;"> -->
+            Amazon
+          </h4>
+          <a id="amazonLink" href="#" target="_blank" class="btn btn-default btn-block">Amazon'de Ara</a>
+        </div></div>
+      </div>
+    
+      <div class="item col-xs-12 col-sm-6 col-md-4">
+        <div class="thumbnail"><div class="caption">
+          <h4 class="card-title">
+            <!-- <img src="https://seeklogo.com/images/P/pttavm-logo-452209CDA8-seeklogo.com.svg" alt="PTTAVM logo" style="height:18px; vertical-align:middle; margin-right:8px;"> -->
+            PTTAVM
+          </h4>
+          <a id="pttavmLink" href="#" target="_blank" class="btn btn-default btn-block">PTTAVM'de Ara</a>
+        </div></div>
+      </div>
+    
+      <div class="item col-xs-12 col-sm-6 col-md-4">
+        <div class="thumbnail"><div class="caption">
+          <h4 class="card-title">
+            <!-- <img src="https://seeklogo.com/images/N/n11-com-logo-490522F3BA-seeklogo.com.svg" alt="n11 logo" style="height:18px; vertical-align:middle; margin-right:8px;"> -->
+            n11
+          </h4>
+          <a id="n11Link" href="#" target="_blank" class="btn btn-default btn-block">n11'de Ara</a>
+        </div></div>
+      </div>
+    
+      <div class="item col-xs-12 col-sm-6 col-md-4">
+        <div class="thumbnail"><div class="caption">
+          <h4 class="card-title">
+            <!-- <img src="https://logowik.com/content/uploads/images/cicek-sepeti-vector-logo.svg" alt="ÇiçekSepeti logo" style="height:18px; vertical-align:middle; margin-right:8px;"> -->
+            ÇiçekSepeti
+          </h4>
+          <a id="ciceksepetiLink" href="#" target="_blank" class="btn btn-default btn-block">ÇiçekSepeti'de Ara</a>
+        </div></div>
+      </div>
+    
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("searchForm");
+      const results = document.getElementById("results");
+      const feedback = document.getElementById("searchFeedback");
+
+      const links = {
+        googleLink:      q => `https://www.google.com/search?q=${q}`,
+        cimriLink:       q => `https://www.cimri.com/arama?q=${q}`,
+        akakceLink:      q => `https://www.akakce.com/arama/?q=${q}`,
+        hepsiburadaLink: q => `https://www.hepsiburada.com/ara?q=${q}`,
+        trendyolLink:    q => `https://www.trendyol.com/sr?q=${q}`,
+        amazonLink:      q => `https://www.amazon.com.tr/s?k=${q}`,
+        pttavmLink:      q => `https://www.pttavm.com/arama?q=${q}`,
+        n11Link:         q => `https://www.n11.com/arama?q=${q}`,
+        ciceksepetiLink: q => `https://www.ciceksepeti.com/search?query=${q}`
+      };
+
+      form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const rawQuery = document.getElementById("query").value.trim();
+        if (!rawQuery) return;
+
+        const encoded = encodeURIComponent(rawQuery);
+        Object.entries(links).forEach(([id, fn]) => {
+          document.getElementById(id).href = fn(encoded);
+        });
+
+        feedback.textContent = `"${rawQuery}" için sonuçlar listelendi.`;
+        results.classList.remove("hidden");
+
+        const cards = document.querySelectorAll('.thumbnail');
+        cards.forEach(card => {
+          card.style.transition = "none";
+          card.style.opacity = "0";
+          void card.offsetWidth; // force reflow
+          card.style.transition = "opacity 0.4s ease-in";
+          card.style.opacity = "1";
+        });
+      });
+    });
+  </script>
+</body>
+</html>
