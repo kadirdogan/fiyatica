@@ -9,6 +9,7 @@ export default async function handler(req, res) {
       ignoreAttributes: false,
       attributeNamePrefix: ""
     });
+
     const data = parser.parse(xmlText);
     const currencies = data.Tarih_Date.Currency;
 
@@ -18,9 +19,9 @@ export default async function handler(req, res) {
 
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.status(200).json({
-      USD: parseFloat(usd),
-      EUR: parseFloat(eur),
-      XAU: parseFloat(xau)
+      USD: usd ? parseFloat(usd) : null,
+      EUR: eur ? parseFloat(eur) : null,
+      XAU: xau ? parseFloat(xau) : null
     });
   } catch (e) {
     res.status(500).json({ error: "TCMB verisi alınamadı", detay: e.message });
