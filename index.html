@@ -63,83 +63,92 @@
     </div>
 
     <div id="results" class="row list-group hidden">
-      <!-- Arama sonuç kartları burada devam ediyor -->
       <div class="item col-xs-12 col-sm-6 col-md-4">
-        <div class="thumbnail"><div class="caption">
-          <h4 class="card-title">Google</h4>
-          <a id="googleLink" href="#" target="_blank" class="btn btn-default btn-block">Google'de Ara</a>
-        </div></div>
+        <div class="thumbnail">
+          <div class="caption">
+            <h4 class="card-title">Google</h4>
+            <a id="googleLink" href="#" target="_blank" class="btn btn-default btn-block">Google'de Ara</a>
+          </div>
+        </div>
       </div>
-      <!-- diğerleri aynı şekilde devam ediyor... -->
+      <!-- Diğer siteler aynı yapıda devam edecek -->
     </div>
   </div>
 
   <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("searchForm");
-  const results = document.getElementById("results");
-  const feedback = document.getElementById("searchFeedback");
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("searchForm");
+    const results = document.getElementById("results");
+    const feedback = document.getElementById("searchFeedback");
 
-  const links = {
-    googleLink:      q => `https://www.google.com/search?q=${q}`,
-    cimriLink:       q => `https://www.cimri.com/arama?q=${q}`,
-    akakceLink:      q => `https://www.akakce.com/arama/?q=${q}`,
-    hepsiburadaLink: q => `https://www.hepsiburada.com/ara?q=${q}`,
-    trendyolLink:    q => `https://www.trendyol.com/sr?q=${q}`,
-    amazonLink:      q => `https://www.amazon.com.tr/s?k=${q}`,
-    pttavmLink:      q => `https://www.pttavm.com/arama?q=${q}`,
-    n11Link:         q => `https://www.n11.com/arama?q=${q}`,
-    ciceksepetiLink: q => `https://www.ciceksepeti.com/search?query=${q}`
-  };
+    const links = {
+      googleLink:      q => `https://www.google.com/search?q=${q}`,
+      cimriLink:       q => `https://www.cimri.com/arama?q=${q}`,
+      akakceLink:      q => `https://www.akakce.com/arama/?q=${q}`,
+      hepsiburadaLink: q => `https://www.hepsiburada.com/ara?q=${q}`,
+      trendyolLink:    q => `https://www.trendyol.com/sr?q=${q}`,
+      amazonLink:      q => `https://www.amazon.com.tr/s?k=${q}`,
+      pttavmLink:      q => `https://www.pttavm.com/arama?q=${q}`,
+      n11Link:         q => `https://www.n11.com/arama?q=${q}`,
+      ciceksepetiLink: q => `https://www.ciceksepeti.com/search?query=${q}`
+    };
 
-  form.addEventListener("submit", function(e) {
-    e.preventDefault();
-    const rawQuery = document.getElementById("query").value.trim();
-    if (!rawQuery) return;
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const rawQuery = document.getElementById("query").value.trim();
+      if (!rawQuery) return;
 
-    const encoded = encodeURIComponent(rawQuery);
-    Object.entries(links).forEach(([id, fn]) => {
-      const el = document.getElementById(id);
-      if (el) el.href = fn(encoded);
+      const encoded = encodeURIComponent(rawQuery);
+      Object.entries(links).forEach(([id, fn]) => {
+        const el = document.getElementById(id);
+        if (el) el.href = fn(encoded);
+      });
+
+      feedback.textContent = `"${rawQuery}" için sonuçlar listelendi.`;
+      results.classList.remove("hidden");
+
+      const cards = document.querySelectorAll('.thumbnail');
+      cards.forEach(card => {
+        card.style.transition = "none";
+        card.style.opacity = "0";
+        void card.offsetWidth;
+        card.style.transition = "opacity 0.4s ease-in";
+        card.style.opacity = "1";
+      });
     });
 
-    feedback.textContent = `"${rawQuery}" için sonuçlar listelendi.`;
-    results.classList.remove("hidden");
+    // Kur verisini al
+    fetch("https://fiyatica.vercel.app/api/kurlar")
+      .then(res => res.json())
+      .then(data => {
+        console.log("Kur verisi alındı:", data);
 
-    const cards = document.querySelectorAll('.thumbnail');
-    cards.forEach(card => {
-      card.style.transition = "none";
-      card.style.opacity = "0";
-      void card.offsetWidth;
-      card.style.transition = "opacity 0.4s ease-in";
-      card.style.opacity = "1";
-    });
+        const usdEl = document.getElementById("usd");
+        const eurEl = document.getElementById("eur");
+        const xauEl = document.getElementById("gramAltin");
+
+        if (data.USD != null && usdEl) usdEl.textContent = data.USD.toFixed(2) + " TL";
+        else if (usdEl) usdEl.textContent = "veri eksik";
+
+        if (data.EUR != null && eurEl) eurEl.textContent = data.EUR.toFixed(2) + " TL";
+        else if (eurEl) eurEl.textContent = "veri eksik";
+
+        if (xauEl) {
+          if (data.XAU != null) xauEl.textContent = data.XAU.toFixed(2) + " TL";
+          else xauEl.textContent = "yayınlanmamış";
+        }
+      })
+      .catch(err => {
+        console.error("Kur verisi alınamadı:", err);
+        const usdEl = document.getElementById("usd");
+        const eurEl = document.getElementById("eur");
+        const xauEl = document.getElementById("gramAltin");
+
+        if (usdEl) usdEl.textContent = "veri alınamadı";
+        if (eurEl) eurEl.textContent = "veri alınamadı";
+        if (xauEl) xauEl.textContent = "veri alınamadı";
+      });
   });
-
-// ✅ TCMB verisini Vercel proxy üzerinden al (log ile)
-fetch("https://fiyatica.vercel.app/api/kurlar")
-  .then(res => res.json())
-  .then(data => {
-    console.log("Kur verisi alındı:", data);
-    if (data.USD && data.EUR && data.XAU) {
-      document.getElementById("usd").textContent = data.USD.toFixed(2) + " TL";
-      document.getElementById("eur").textContent = data.EUR.toFixed(2) + " TL";
-      document.getElementById("gramAltin").textContent = data.XAU.toFixed(2) + " TL";
-    } else {
-      console.warn("Kur verisi eksik:", data);
-      document.getElementById("usd").textContent = "veri eksik";
-      document.getElementById("eur").textContent = "veri eksik";
-      document.getElementById("gramAltin").textContent = "veri eksik";
-    }
-  })
-  .catch(err => {
-    console.error("Kur verisi alınamadı:", err);
-    document.getElementById("usd").textContent = "veri alınamadı";
-    document.getElementById("eur").textContent = "veri alınamadı";
-    document.getElementById("gramAltin").textContent = "veri alınamadı";
-  });
-});
-</script>
-
+  </script>
 </body>
 </html>
