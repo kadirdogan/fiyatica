@@ -1,14 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
   <title>Fiyatica - Tüm Sitelerde Ara</title>
-  <meta name="description" content="Fiyatica ile aynı anda Cimri, Akakçe ve diğer sitelerde arama yapın. Bir kere yazın, her yerde aransın.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <script data-goatcounter="https://kadir.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
   <style>
     body {
       padding: 2em;
@@ -19,7 +15,7 @@
       font-weight: bold;
     }
     .thumbnail {
-      height: 100%%;
+      height: 100%;
       opacity: 0;
     }
     .caption a {
@@ -29,7 +25,7 @@
     #searchFeedback {
       font-weight: bold;
       font-size: 16px;
-      margin-top: 15px;
+      margin-top: 10px;
       color: #007acc;
       text-align: center;
     }
@@ -37,110 +33,89 @@
 </head>
 <body>
   <div class="container">
-    <div class="well well-sm">
-      <strong>Bir kere yaz, her yerde ara.</strong>
-      <form class="form-inline" id="searchForm">
-        <div class="form-group">
-          <input type="text" class="form-control" id="query" placeholder="Ürün adı yazın" required>
+    <div class="row">
+      <!-- Arama Formu -->
+      <div class="col-sm-7">
+        <div class="well well-sm">
+          <strong>Bir kere yaz, her yerde ara.</strong>
+          <form class="form-inline" id="searchForm">
+            <div class="form-group">
+              <input type="text" class="form-control" id="query" placeholder="Ürün adı yazın" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Ara</button>
+          </form>
+          <div id="searchFeedback"></div>
         </div>
-        <button type="submit" class="btn btn-primary">Ara</button>
-      </form>
+      </div>
+
+      <!-- Piyasa Kutusu -->
+      <div class="col-sm-5">
+        <div id="piyasaKutusu" class="well well-sm" style="background:#fff; border:1px solid #ccc;">
+          <h4 style="margin-top:0">📈 Güncel Piyasa Fiyatları</h4>
+          <ul style="list-style:none; padding-left:0; margin-bottom:0">
+            <li>💵 Dolar: <strong id="usd">yükleniyor...</strong></li>
+            <li>💶 Euro: <strong id="eur">yükleniyor...</strong></li>
+            <li>🥇 Gram Altın: <strong id="gramAltin">2.411 TL</strong></li>
+          </ul>
+        </div>
+      </div>
     </div>
 
-    <div id="searchFeedback"></div>
-
     <div id="results" class="row list-group hidden">
-      
       <div class="item col-xs-12 col-sm-6 col-md-4">
         <div class="thumbnail"><div class="caption">
-          <h4 class="card-title">
-            <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo" style="height:18px; vertical-align:middle; margin-right:8px;"> -->
-            Google
-          </h4>
-          <a id="googleLink" href="#" target="_blank" class="btn btn-default btn-block">Google'da Ara</a>
+          <h4 class="card-title">Google</h4>
+          <a id="googleLink" href="#" target="_blank" class="btn btn-default btn-block">Google'de Ara</a>
         </div></div>
       </div>
-    
       <div class="item col-xs-12 col-sm-6 col-md-4">
         <div class="thumbnail"><div class="caption">
-          <h4 class="card-title">
-           <!-- <img src="https://logowik.com/content/uploads/images/cimri-com-logo-vector.svg" alt="Cimri logo" style="height:18px; vertical-align:middle; margin-right:8px;">-->
-            Cimri
-          </h4>
+          <h4 class="card-title">Cimri</h4>
           <a id="cimriLink" href="#" target="_blank" class="btn btn-default btn-block">Cimri'de Ara</a>
         </div></div>
       </div>
-    
       <div class="item col-xs-12 col-sm-6 col-md-4">
         <div class="thumbnail"><div class="caption">
-          <h4 class="card-title">
-            <!--<img src="https://logowik.com/content/uploads/images/akakce-vector-logo.svg" alt="Akakçe logo" style="height:18px; vertical-align:middle; margin-right:8px;"> -->
-            Akakçe
-          </h4>
+          <h4 class="card-title">Akakçe</h4>
           <a id="akakceLink" href="#" target="_blank" class="btn btn-default btn-block">Akakçe'de Ara</a>
         </div></div>
       </div>
-    
       <div class="item col-xs-12 col-sm-6 col-md-4">
         <div class="thumbnail"><div class="caption">
-          <h4 class="card-title">
-            <!-- <img src="https://logowik.com/content/uploads/images/hepsiburada-logo-vector.svg" alt="Hepsiburada logo" style="height:18px; vertical-align:middle; margin-right:8px;"> -->
-            Hepsiburada
-          </h4>
+          <h4 class="card-title">Hepsiburada</h4>
           <a id="hepsiburadaLink" href="#" target="_blank" class="btn btn-default btn-block">Hepsiburada'da Ara</a>
         </div></div>
       </div>
-    
       <div class="item col-xs-12 col-sm-6 col-md-4">
         <div class="thumbnail"><div class="caption">
-          <h4 class="card-title">
-            <!-- <img src="https://seeklogo.com/images/T/trendyol-logo-A32D703109-seeklogo.com.svg" alt="Trendyol logo" style="height:18px; vertical-align:middle; margin-right:8px;"> -->
-            Trendyol
-          </h4>
+          <h4 class="card-title">Trendyol</h4>
           <a id="trendyolLink" href="#" target="_blank" class="btn btn-default btn-block">Trendyol'da Ara</a>
         </div></div>
       </div>
-    
       <div class="item col-xs-12 col-sm-6 col-md-4">
         <div class="thumbnail"><div class="caption">
-          <h4 class="card-title">
-            <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon logo" style="height:18px; vertical-align:middle; margin-right:8px;"> -->
-            Amazon
-          </h4>
+          <h4 class="card-title">Amazon</h4>
           <a id="amazonLink" href="#" target="_blank" class="btn btn-default btn-block">Amazon'da Ara</a>
         </div></div>
       </div>
-    
       <div class="item col-xs-12 col-sm-6 col-md-4">
         <div class="thumbnail"><div class="caption">
-          <h4 class="card-title">
-            <!-- <img src="https://seeklogo.com/images/P/pttavm-logo-452209CDA8-seeklogo.com.svg" alt="PTTAVM logo" style="height:18px; vertical-align:middle; margin-right:8px;"> -->
-            PTTAVM
-          </h4>
+          <h4 class="card-title">PTTAVM</h4>
           <a id="pttavmLink" href="#" target="_blank" class="btn btn-default btn-block">PTTAVM'de Ara</a>
         </div></div>
       </div>
-    
       <div class="item col-xs-12 col-sm-6 col-md-4">
         <div class="thumbnail"><div class="caption">
-          <h4 class="card-title">
-            <!-- <img src="https://seeklogo.com/images/N/n11-com-logo-490522F3BA-seeklogo.com.svg" alt="n11 logo" style="height:18px; vertical-align:middle; margin-right:8px;"> -->
-            n11
-          </h4>
+          <h4 class="card-title">n11</h4>
           <a id="n11Link" href="#" target="_blank" class="btn btn-default btn-block">n11'de Ara</a>
         </div></div>
       </div>
-    
       <div class="item col-xs-12 col-sm-6 col-md-4">
         <div class="thumbnail"><div class="caption">
-          <h4 class="card-title">
-            <!-- <img src="https://logowik.com/content/uploads/images/cicek-sepeti-vector-logo.svg" alt="ÇiçekSepeti logo" style="height:18px; vertical-align:middle; margin-right:8px;"> -->
-            ÇiçekSepeti
-          </h4>
-          <a id="ciceksepetiLink" href="#" target="_blank" class="btn btn-default btn-block">ÇiçekSepeti'nde Ara</a>
+          <h4 class="card-title">ÇiçekSepeti</h4>
+          <a id="ciceksepetiLink" href="#" target="_blank" class="btn btn-default btn-block">ÇiçekSepeti'de Ara</a>
         </div></div>
       </div>
-    
     </div>
   </div>
 
@@ -169,7 +144,8 @@
 
         const encoded = encodeURIComponent(rawQuery);
         Object.entries(links).forEach(([id, fn]) => {
-          document.getElementById(id).href = fn(encoded);
+          const el = document.getElementById(id);
+          if (el) el.href = fn(encoded);
         });
 
         feedback.textContent = `"${rawQuery}" için sonuçlar listelendi.`;
@@ -179,12 +155,34 @@
         cards.forEach(card => {
           card.style.transition = "none";
           card.style.opacity = "0";
-          void card.offsetWidth; // force reflow
+          void card.offsetWidth;
           card.style.transition = "opacity 0.4s ease-in";
           card.style.opacity = "1";
         });
       });
+
+      fetch("https://www.tcmb.gov.tr/kurlar/today.xml")
+        .then(res => res.text())
+        .then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
+        .then(data => {
+          const allCurrencies = data.getElementsByTagName("Currency");
+          for (let i = 0; i < allCurrencies.length; i++) {
+            const code = allCurrencies[i].getAttribute("CurrencyCode");
+            const sell = allCurrencies[i].getElementsByTagName("ForexSelling")[0];
+            if (code === "USD" && sell) {
+              document.getElementById("usd").textContent = parseFloat(sell.textContent).toFixed(2) + " TL";
+            }
+            if (code === "EUR" && sell) {
+              document.getElementById("eur").textContent = parseFloat(sell.textContent).toFixed(2) + " TL";
+            }
+          }
+        })
+        .catch(() => {
+          document.getElementById("usd").textContent = "veri alınamadı";
+          document.getElementById("eur").textContent = "veri alınamadı";
+        });
     });
   </script>
+  
 </body>
 </html>
