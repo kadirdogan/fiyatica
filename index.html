@@ -74,59 +74,68 @@
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const form = document.getElementById("searchForm");
-      const results = document.getElementById("results");
-      const feedback = document.getElementById("searchFeedback");
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("searchForm");
+  const results = document.getElementById("results");
+  const feedback = document.getElementById("searchFeedback");
 
-      const links = {
-        googleLink:      q => `https://www.google.com/search?q=${q}`,
-        cimriLink:       q => `https://www.cimri.com/arama?q=${q}`,
-        akakceLink:      q => `https://www.akakce.com/arama/?q=${q}`,
-        hepsiburadaLink: q => `https://www.hepsiburada.com/ara?q=${q}`,
-        trendyolLink:    q => `https://www.trendyol.com/sr?q=${q}`,
-        amazonLink:      q => `https://www.amazon.com.tr/s?k=${q}`,
-        pttavmLink:      q => `https://www.pttavm.com/arama?q=${q}`,
-        n11Link:         q => `https://www.n11.com/arama?q=${q}`,
-        ciceksepetiLink: q => `https://www.ciceksepeti.com/search?query=${q}`
-      };
+  const links = {
+    googleLink:      q => `https://www.google.com/search?q=${q}`,
+    cimriLink:       q => `https://www.cimri.com/arama?q=${q}`,
+    akakceLink:      q => `https://www.akakce.com/arama/?q=${q}`,
+    hepsiburadaLink: q => `https://www.hepsiburada.com/ara?q=${q}`,
+    trendyolLink:    q => `https://www.trendyol.com/sr?q=${q}`,
+    amazonLink:      q => `https://www.amazon.com.tr/s?k=${q}`,
+    pttavmLink:      q => `https://www.pttavm.com/arama?q=${q}`,
+    n11Link:         q => `https://www.n11.com/arama?q=${q}`,
+    ciceksepetiLink: q => `https://www.ciceksepeti.com/search?query=${q}`
+  };
 
-      form.addEventListener("submit", function(e) {
-        e.preventDefault();
-        const rawQuery = document.getElementById("query").value.trim();
-        if (!rawQuery) return;
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const rawQuery = document.getElementById("query").value.trim();
+    if (!rawQuery) return;
 
-        const encoded = encodeURIComponent(rawQuery);
-        Object.entries(links).forEach(([id, fn]) => {
-          const el = document.getElementById(id);
-          if (el) el.href = fn(encoded);
-        });
-
-        feedback.textContent = `"${rawQuery}" için sonuçlar listelendi.`;
-        results.classList.remove("hidden");
-
-        const cards = document.querySelectorAll('.thumbnail');
-        cards.forEach(card => {
-          card.style.transition = "none";
-          card.style.opacity = "0";
-          void card.offsetWidth;
-          card.style.transition = "opacity 0.4s ease-in";
-          card.style.opacity = "1";
-        });
-      });
-
-      // ✅ TCMB verisini Vercel proxy üzerinden al
-      fetch("https://fiyatica.vercel.app/api/kurlar")
-        .then(res => res.json())
-        .then(data => {
-          document.getElementById("usd").textContent = data.USD.toFixed(2) + " TL";
-          document.getElementById("eur").textContent = data.EUR.toFixed(2) + " TL";
-        })
-        .catch(() => {
-          document.getElementById("usd").textContent = "veri alınamadı";
-          document.getElementById("eur").textContent = "veri alınamadı";
-        });
+    const encoded = encodeURIComponent(rawQuery);
+    Object.entries(links).forEach(([id, fn]) => {
+      const el = document.getElementById(id);
+      if (el) el.href = fn(encoded);
     });
-  </script>
+
+    feedback.textContent = `"${rawQuery}" için sonuçlar listelendi.`;
+    results.classList.remove("hidden");
+
+    const cards = document.querySelectorAll('.thumbnail');
+    cards.forEach(card => {
+      card.style.transition = "none";
+      card.style.opacity = "0";
+      void card.offsetWidth;
+      card.style.transition = "opacity 0.4s ease-in";
+      card.style.opacity = "1";
+    });
+  });
+
+  // ✅ TCMB verisini Vercel proxy üzerinden al (log ile)
+  fetch("https://fiyatica.vercel.app/api/kurlar")
+    .then(res => res.json())
+    .then(data => {
+      console.log("Kur verisi alındı:", data);
+      if (data.USD && data.EUR) {
+        document.getElementById("usd").textContent = data.USD.toFixed(2) + " TL";
+        document.getElementById("eur").textContent = data.EUR.toFixed(2) + " TL";
+      } else {
+        console.warn("Kur verisi eksik:", data);
+        document.getElementById("usd").textContent = "veri eksik";
+        document.getElementById("eur").textContent = "veri eksik";
+      }
+    })
+    .catch(err => {
+      console.error("Kur verisi alınamadı:", err);
+      document.getElementById("usd").textContent = "veri alınamadı";
+      document.getElementById("eur").textContent = "veri alınamadı";
+    });
+});
+</script>
+
 </body>
 </html>
