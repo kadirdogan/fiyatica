@@ -116,25 +116,28 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // ✅ TCMB verisini Vercel proxy üzerinden al (log ile)
-  fetch("https://fiyatica.vercel.app/api/kurlar")
-    .then(res => res.json())
-    .then(data => {
-      console.log("Kur verisi alındı:", data);
-      if (data.USD && data.EUR) {
-        document.getElementById("usd").textContent = data.USD.toFixed(2) + " TL";
-        document.getElementById("eur").textContent = data.EUR.toFixed(2) + " TL";
-      } else {
-        console.warn("Kur verisi eksik:", data);
-        document.getElementById("usd").textContent = "veri eksik";
-        document.getElementById("eur").textContent = "veri eksik";
-      }
-    })
-    .catch(err => {
-      console.error("Kur verisi alınamadı:", err);
-      document.getElementById("usd").textContent = "veri alınamadı";
-      document.getElementById("eur").textContent = "veri alınamadı";
-    });
+// ✅ TCMB verisini Vercel proxy üzerinden al (log ile)
+fetch("https://fiyatica.vercel.app/api/kurlar")
+  .then(res => res.json())
+  .then(data => {
+    console.log("Kur verisi alındı:", data);
+    if (data.USD && data.EUR && data.XAU) {
+      document.getElementById("usd").textContent = data.USD.toFixed(2) + " TL";
+      document.getElementById("eur").textContent = data.EUR.toFixed(2) + " TL";
+      document.getElementById("gramAltin").textContent = data.XAU.toFixed(2) + " TL";
+    } else {
+      console.warn("Kur verisi eksik:", data);
+      document.getElementById("usd").textContent = "veri eksik";
+      document.getElementById("eur").textContent = "veri eksik";
+      document.getElementById("gramAltin").textContent = "veri eksik";
+    }
+  })
+  .catch(err => {
+    console.error("Kur verisi alınamadı:", err);
+    document.getElementById("usd").textContent = "veri alınamadı";
+    document.getElementById("eur").textContent = "veri alınamadı";
+    document.getElementById("gramAltin").textContent = "veri alınamadı";
+  });
 });
 </script>
 
