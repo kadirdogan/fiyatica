@@ -1,26 +1,30 @@
+import { XMLParser } from 'fast-xml-parser';
+
 export default async function handler(req, res) {
   try {
+    // TCMB XML verisini çek
     const response = await fetch("https://www.tcmb.gov.tr/kurlar/today.xml");
     const xmlText = await response.text();
 
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(xmlText, "text/xml");
+    // XML verisini parse et
+    const parser = new XMLParser();
+    const data = parser.parse(xmlText);
 
-    let usd = null, eur = null;
-    const list = xml.getElementsByTagName("Currency");
+    // Currency array'ini al
+    const currencies = data.Tarih_Date.Currency;
 
-    for (let i = 0; i < list.length; i++) {
-      const item = list[i];
-      const code = item.getAttribute("CurrencyCode");
-      const selling = item.getElementsByTagName("ForexSelling")[0]?.textContent;
+    // USD ve EUR değerlerini bul
+    const usd = currencies.find(c => c['@_CurrencyCode'] === 'USD')?.ForexSelling;
+    const eur = currencies.find(c => c['@_CurrencyCode'] === 'EUR')?.ForexSelling;
 
-      if (code === "USD") usd = parseFloat(selling);
-      if (code === "EUR") eur = parseFloat(selling);
-    }
-
+    // CORS ve başarılı yanıt
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.status(200).json({ USD: usd, EUR: eur });
+    res.status(200).json({
+      USD: parseFloat(usd),
+      EUR: parseFloat(eur)
+    });
   } catch (e) {
+    // Hata durumu
     res.status(500).json({ error: "TCMB verisi alınamadı", detay: e.message });
   }
 }
